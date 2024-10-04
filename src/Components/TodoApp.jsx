@@ -1,4 +1,6 @@
-import { Container, Title, Button, Group, TextInput, Stack, Paper, Checkbox } from '@mantine/core'
+import { Container } from '@mantine/core'
+import TodoForm from './TodoForm'
+import TodoList from './TodoList'
 import { useState } from 'react'
 
 export default function TodoApp() {
@@ -7,7 +9,7 @@ export default function TodoApp() {
     const [checkedLabels, setCheckedLabels]  = useState([])
 
     const añadirLabel = (newLabel) => {
-        if(labels.includes(newLabel)) return // Hacer que salte un anuncio de que la tarea ya existe 
+        if(labels.includes(newLabel)) return 
         const newLabels = [...labels]
         newLabels.push(newLabel)
         setLabels(newLabels)
@@ -33,40 +35,8 @@ export default function TodoApp() {
 
     return (
         <Container size="sm">
-            <Title style={{ textAlign: 'center', marginTop: 20 }} order={1}>Todo App</Title>
-            <Group justify="center">
-                <TextInput
-                    radius="xl"
-                    placeholder="Add Todo Task"
-                    mb="md"
-                    flex={1}
-                    style={{ marginTop: 17 }}
-                    value={value}
-                    onChange={(event) => setValue(event.currentTarget.value)}
-                >
-                </TextInput>
-                <Button onClick={handleClickAdd}
-                    radius="xl"
-                >Add</Button>
-            </Group>
-            <Stack
-                bg="var(--mantine-color-body)"
-                align="stretch"
-                justify="center"
-                gap="md"
-            >
-                {
-                    labels.map(label => (
-                         
-                        <Paper key={label} shadow="xs" radius="lg" withBorder p="xs" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Checkbox onChange={() => handleChecked(label)} label={label} radius="xl" color="green"
-                            style={{textDecoration: checkedLabels.includes(label) ? 'line-through' : 'none', // Cambia el estilo según si está marcada o no
-                        }}></Checkbox>
-                            <Button color="pink" radius="xl" onClick={()=>handleClickDelete(label)}>Eliminar</Button>
-                        </Paper>
-                    ))
-                }
-            </Stack>
+            <TodoForm handleClickAdd={handleClickAdd} value={value} setValue={setValue}/>
+            <TodoList labels={labels} handleChecked={handleChecked} checkedLabels={checkedLabels} handleClickDelete={handleClickDelete}/>
         </Container>
     )
 }
